@@ -3,7 +3,7 @@ import html
 
 import requests
 
-from blocks import clean, head, title
+from blocks import clean, title
 
 
 def focused(on, no_scripts=True, to_file=True):
@@ -18,17 +18,14 @@ def focused(on, no_scripts=True, to_file=True):
     if response.status_code != 200:
         raise Exception(f"[{response.status_code}]")
 
-    # Unescape html entites
-    text = html.unescape(response.text)
-
     # Remove comments and scripts
-    content = clean(text, no_scripts)
+    head, body = clean(response.text, no_scripts)
 
-    # Compose web page
-    page = f"<!DOCTYPE html>\n<html>\n{head(text)}\n<body>\n{content}\n</body>\n</html>"
+    # Compose web page and unescape html entites
+    page = html.unescape(f"<!DOCTYPE html>\n<html>\n{head}\n{body}\n</html>")
 
     if to_file:
-        with open(f"{title(text)}.html", "w") as file:
+        with open(f"{title(head)}.html", "w") as file:
             file.write(page)
     else:
         return page
