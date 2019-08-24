@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="focused",
-    version="1.0.1",
+    version="1.1.0",
     author="Federico A. Corazza",
     author_email="federico.corazza@live.it",
     description="Focused is a Python library that removes clutter from webpages. Read articles without distractions.",
@@ -15,6 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires=">=3.6",
     install_requires=[
+        "click==7.0",
         "requests==2.22.0",
     ],
     classifiers=[

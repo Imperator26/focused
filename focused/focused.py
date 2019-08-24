@@ -1,35 +1,55 @@
-import sys
 import html
 
+import click
 import requests
 
 from blocks import clean, title
 
 
-def focused(on, no_scripts=True, to_file=True):
+@click.command()
+@click.argument(
+    "articles",
+    nargs=-1
+)
+@click.option(
+    "--no-scripts", "-ns",
+    default=True,
+    help="Remove scripts in the web page."
+)
+@click.option(
+    "--output", "-o",
+    type=click.Choice(["cli", "python", "file"]),
+    default="cli"
+)
+def focused(articles, no_scripts, output):
     # Set headers
     headers = {"user-agent": "focused"}
 
-    # Get website
-    response = requests.get(
-        on,
-        headers=headers
-    )
-    if response.status_code != 200:
-        raise Exception(f"[{response.status_code}]")
+    for article in articles:
+        # Get website
+        response = requests.get(
+            article,
+            headers=headers
+        )
+        if response.status_code != 200:
+            raise Exception(f"[{response.status_code}]")
 
-    # Remove comments and scripts
-    head, body = clean(response.text, no_scripts)
+        # Remove comments and scripts
+        head, body = clean(response.text, no_scripts)
 
-    # Compose web page and unescape html entites
-    page = html.unescape(f"<!DOCTYPE html>\n<html>\n{head}\n{body}\n</html>")
+        # Compose web page and unescape html entites
+        page = html.unescape(
+            f"<!DOCTYPE html>\n<html>\n{head}\n{body}\n</html>"
+        )
 
-    if to_file:
-        with open(f"{title(head)}.html", "w") as file:
-            file.write(page)
-    else:
-        return page
+        if output == "cli":
+            click.echo(page)
+        elif output == "file":
+            with open(f"{title(head)}.html", "w") as file:
+                file.write(page)
+        else:
+            return page
 
 
 if __name__ == "__main__":
-    focused(on=sys.argv[1])
+    focused()
