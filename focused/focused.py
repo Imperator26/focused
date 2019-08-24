@@ -3,6 +3,8 @@ import html
 import click
 import requests
 
+from tqdm import tqdm
+
 from blocks import clean, title
 
 
@@ -25,7 +27,7 @@ def focused(articles, no_scripts, output):
     # Set headers
     headers = {"user-agent": "focused"}
 
-    for article in articles:
+    for article in tqdm(articles):
         # Get website
         response = requests.get(
             article,
