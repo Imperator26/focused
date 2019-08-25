@@ -1,4 +1,11 @@
+import logging
 import re
+
+
+format = "%(asctime)-15s - %(name)s - %(levelname)s - %(message)s"
+logging.basicConfig(format=format, level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 def title(html):
     title_reg = re.compile(r"<title.*?>(.*)</title>", re.MULTILINE)

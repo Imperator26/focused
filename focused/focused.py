@@ -1,4 +1,5 @@
 import html
+import logging
 
 import click
 import requests
@@ -6,6 +7,13 @@ import requests
 from tqdm import tqdm
 
 from .blocks import clean, title
+
+
+format = "%(asctime)-15s - %(name)s - %(levelname)s - %(message)s"
+logging.basicConfig(format=format, level=logging.INFO)
+logger = logging.getLogger(__name__)
+fh = logging.FileHandler("focused.log")
+logger.addHandler(fh)
 
 
 @click.command()
@@ -31,6 +39,8 @@ def focus(articles, no_scripts, output):
         articles = (articles,)
 
     for article in tqdm(articles):
+        logger.info(f"Focusing on: {article}")
+
         # Get website
         response = requests.get(
             article,
