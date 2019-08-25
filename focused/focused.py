@@ -5,7 +5,7 @@ import requests
 
 from tqdm import tqdm
 
-from blocks import clean, title
+from .blocks import clean, title
 
 
 @click.command()
@@ -23,7 +23,7 @@ from blocks import clean, title
     type=click.Choice(["cli", "python", "file"]),
     default="cli"
 )
-def focused(articles, no_scripts, output):
+def focus(articles, no_scripts, output):
     # Set headers
     headers = {"user-agent": "focused"}
 
@@ -54,4 +54,4 @@ def focused(articles, no_scripts, output):
 
 
 if __name__ == "__main__":
-    focused()
+    focus()
