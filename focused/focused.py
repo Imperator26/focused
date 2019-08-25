@@ -27,6 +27,9 @@ def focus(articles, no_scripts, output):
     # Set headers
     headers = {"user-agent": "focused"}
 
+    if not isinstance(articles, tuple):
+        articles = (articles,)
+
     for article in tqdm(articles):
         # Get website
         response = requests.get(

@@ -5,10 +5,11 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="focused",
-    version="1.1.2",
+    version="1.1.3",
     author="Federico A. Corazza",
     author_email="federico.corazza@live.it",
-    description="Focused is a Python library that removes clutter from webpages. Read articles without distractions.",
+    description="""Focused is a Python library that removes clutter from
+    webpages. Read articles without distractions.""",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Imperator26/focused",
