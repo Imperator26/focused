@@ -1,6 +1,7 @@
 import logging
 import re
 
+from .exceptions import MissingTag
 
 format = "%(asctime)-15s - %(name)s - %(levelname)s - %(message)s"
 logging.basicConfig(format=format, level=logging.INFO)
@@ -43,8 +44,17 @@ def clean(html, no_scripts):
         html = remove_block(html, scripts_reg)
         html = remove_block(html, no_scripts_reg)
 
-    head = head_reg.search(html).group(0)
-    body = body_reg.search(html).group(0)
+    try:
+        head = head_reg.search(html).group(0)
+    except AttributeError as e:
+        logger.error(e)
+        raise MissingTag("The <head> tag is missing.")
+
+    try:
+        body = body_reg.search(html).group(0)
+    except AttributeError as e:
+        logger.error(e)
+        raise MissingTag("The <body> tag is missing.")
 
     # Find article
     article = find_article(body)
