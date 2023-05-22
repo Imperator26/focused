@@ -18,7 +18,7 @@ setuptools.setup(
     install_requires=[
         "click==7.0",
         "tqdm==4.34.0",
-        "requests==2.22.0",
+        "requests==2.31.0",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
